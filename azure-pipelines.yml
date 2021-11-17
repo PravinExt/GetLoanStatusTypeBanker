@@ -35,14 +35,13 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
     
-- task: LambdaDeployFunction@1
+- task: LambdaNETCoreDeploy@1
   inputs:
     awsCredentials: 'awsconnection'
     regionName: 'ap-south-1'
-    deploymentMode: 'codeandconfiguration'
-    functionName: 'GetLoanStatusTypeBanker'
-    functionHandler: 'GetLoanStatusTypeBanker::GetLoanStatusTypeBanker.LambdaEntryPoint::FunctionHandlerAsync'
-    runtime: 'dotnetcore2.1'
-    codeLocation: 'localfile'
-    localZipFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    roleARN: 'arn:aws:iam::618393550001:role/PBStack-LambdaExecutionRole-1PSIVUYH0ENWL'
+    command: 'deployServerless'
+    packageOnly: false
+    lambdaProjectPath: './GetLoanStatusTypeBanker'
+    stackName: 'GetLoanStatusTypeBanker'
+    s3Bucket: 'pblambdafunctions'
+    s3Prefix: 'GetLoanStatusTypeBanker'
