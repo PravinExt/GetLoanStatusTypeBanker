@@ -13,28 +13,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: | 
-    dotnet restore GetLoanStatusTypeBanker.sln
-    ls
-  displayName: 'dotnet restore'
-
-
-- script: | 
-    dotnet build GetLoanStatusTypeBanker.sln
-    ls
-    cd /home/vsts/work/1/sGetLoanStatusTypeBanker/bin/Debug/netcoreapp2.1/
-    ls -al
-    pwd
-  displayName: 'dotnet build'
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '/home/vsts/work/1/s/GetLoanStatusTypeBanker/bin/Debug/netcoreapp2.1/'
-    includeRootFolder: true
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-    replaceExistingArchive: true
-    
 - task: LambdaNETCoreDeploy@1
   inputs:
     awsCredentials: 'awsconnection'
@@ -44,4 +22,3 @@ steps:
     lambdaProjectPath: './GetLoanStatusTypeBanker'
     stackName: 'GetLoanStatusTypeBanker'
     s3Bucket: 'pblambdafunctions'
-    s3Prefix: 'GetLoanStatusTypeBanker'
